@@ -1,13 +1,12 @@
-﻿using System.IO;
-using BenchmarkDotNet.Loggers;
-
-namespace IndexFilePerfTest
+﻿namespace IndexFilePerfTest
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using BenchmarkDotNet.Loggers;
 
     public class Manifest
     {

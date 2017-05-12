@@ -24,11 +24,11 @@ namespace Tests
         public void EnsureOutputCanBeParsedExists()
         {
             var getFileBenchmark = new FileExistsBenchmark();
-
+            var sqLite = new SqLite(getFileBenchmark.SqLitePath);
             // run the setup
             getFileBenchmark.ChooseFile();
 
-            var exists = getFileBenchmark.FileExistsFromSqLiteApiRowId16384();
+            var exists = sqLite.FileExists(getFileBenchmark.SqLiteFileRowId16384, getFileBenchmark.CurrentFile);
 
             Assert.IsTrue(exists);
         }

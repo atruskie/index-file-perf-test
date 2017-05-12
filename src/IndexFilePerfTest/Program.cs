@@ -1,15 +1,14 @@
-﻿using BenchmarkDotNet.Characteristics;
-using BenchmarkDotNet.Jobs;
-
-namespace IndexFilePerfTest
+﻿namespace IndexFilePerfTest
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using BenchmarkDotNet.Characteristics;
     using BenchmarkDotNet.Configs;
     using BenchmarkDotNet.Exporters.Csv;
+    using BenchmarkDotNet.Jobs;
     using BenchmarkDotNet.Reports;
     using BenchmarkDotNet.Running;
 
@@ -33,9 +32,10 @@ namespace IndexFilePerfTest
                 });
             config.Add(csvExporter);
 
+            // I experimented with removing outliers but I think other processes on the system create outliers more
+            // than abnormal data access patterns
             config.Add(
-                Job.Default.WithRemoveOutliers(false)
-            );
+                Job.Default.WithRemoveOutliers(true));
 
             var switcher = new BenchmarkSwitcher(new[] { typeof(GetFileBenchmark), typeof(FileExistsBenchmark) });
             var summary = switcher.Run(args, config);

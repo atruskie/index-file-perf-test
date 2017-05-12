@@ -105,16 +105,18 @@
                 return false;
             }
 
-            ConsoleLogger.Default.WriteLine(LogKind.Default, output);
+            //ConsoleLogger.Default.WriteLine(LogKind.Default, output);
             return int.Parse(output.Trim()) == 1;
         }
 
         public bool FileExistsApi(string source, string filename)
         {
-            using (new SQLiteConnection($"Data Source={source};Mode=ReadOnly;"))
+            using (var connection = new SQLiteConnection($"Data Source={source};Mode=ReadOnly;"))
             {
-                var command = new SQLiteCommand($"SELECT EXISTS(SELECT 1 FROM file_list WHERE filename = '{filename}' LIMIT 1)");
-                var result = (int)command.ExecuteScalar();
+                connection.Open();
+                var query = $"SELECT EXISTS(SELECT 1 FROM file_list WHERE filename = '{filename}' LIMIT 1)";
+                var command = new SQLiteCommand(query, connection);
+                var result = (long)command.ExecuteScalar();
                 return result == 1;
             }
         }
