@@ -12,6 +12,7 @@
         public void ChooseFile()
         {
             this.CurrentFile = this.manifest.GetRandomFile();
+            this.UpdatePaths(this.DataSize);
         }
 
         [Cleanup]
@@ -48,7 +49,7 @@
         [Benchmark]
         public string GetFileFromSqLiteApiRowId16384()
         {
-            return this.sqLite.GetFileApi(this.sqLiteFileRowId16384, this.CurrentFile, this.OutputDirectory);
+            return this.sqLite.GetFileApi(this.SqLiteFileRowId16384, this.CurrentFile, this.OutputDirectory);
         }
 
         [Benchmark]
@@ -84,7 +85,7 @@
         [Benchmark]
         public string GetFileFromSqLiteRowId16384()
         {
-            return this.sqLite.GetFile(this.sqLiteFileRowId16384, this.CurrentFile, this.OutputDirectory);
+            return this.sqLite.GetFile(this.SqLiteFileRowId16384, this.CurrentFile, this.OutputDirectory);
         }
 
         [Benchmark]

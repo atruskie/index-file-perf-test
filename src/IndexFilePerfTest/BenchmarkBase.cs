@@ -1,4 +1,6 @@
-﻿namespace IndexFilePerfTest
+﻿using BenchmarkDotNet.Attributes;
+
+namespace IndexFilePerfTest
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +15,8 @@
     [JsonExporterAttribute.Full]
     public abstract class BenchmarkBase
     {
+        const string DataRoot = @"C:\Temp\zoomData\";
+
 #pragma warning disable SA1401 // Fields must be private
         protected string tarFile;
         protected string hdf5File;
@@ -34,26 +38,16 @@
 
         protected BenchmarkBase()
         {
-            var dataRoot = @"C:\Temp\zoomData\";
-            var dataSize = "small";
+            this.OutputDirectory = $"{DataRoot}output";
 
-            this.OutputDirectory = $"{dataRoot}output";
-
-            this.manifest = new Manifest(@"C:\Temp\zoomData\small_manifest.txt");
+            // use today's date as a seed - should ensure consistent replication across different machines for the
+            // same day
+            this.manifest = new Manifest(
+                @"C:\Temp\zoomData\small_manifest.txt", 
+                (int)DateTime.Now.Date.ToFileTimeUtc());
 
             this.SqLitePath =
-                @"C:\Work\Github\index-file-perf-test\bin\sqlite-tools-win32-x86-3170000\sqlite3.exe";
-
-            this.tarFile = $"{dataRoot}{dataSize}.tar";
-            this.hdf5File = $"{dataRoot}{dataSize}.h5";
-            this.sqLiteFileRowId32768 = $"{dataRoot}{dataSize}.rowid.32768.sqlite3";
-            this.sqLiteFileNoRowId8192 = $"{dataRoot}{dataSize}.wo_rowid.8192.sqlite3";
-            this.sqLiteFileRowId8192 = $"{dataRoot}{dataSize}.rowid.8192.sqlite3";
-            this.sqLiteFileNoRowId16384 = $"{dataRoot}{dataSize}.wo_rowid.16384.sqlite3";
-            this.sqLiteFileRowId16384 = $"{dataRoot}{dataSize}.rowid.16384.sqlite3";
-            this.sqLiteFileNoRowId32768 = $"{dataRoot}{dataSize}.wo_rowid.32768.sqlite3";
-            this.zipFile = $"{dataRoot}{dataSize}.zip";
-            this.rawFile = $"{dataRoot}4c77b524-1857-4550-afaa-c0ebe5e3960a_101013-0000.mp3.{dataSize}";
+                @"sqlite3.exe";
 
             this.tar = new Tar();
             this.hdf5 = new Hdf5();
@@ -62,8 +56,29 @@
             this.raw = new Raw();
         }
 
+        // Allows benchmarkdotnet to automatically compare two size of files
+        [Params("small", "large")]
+        public string DataSize { get; set; } = "small";
+
         public string OutputDirectory { get; }
 
         public string SqLitePath { get; }
+
+        public string SqLiteFileRowId16384 => this.sqLiteFileRowId16384;
+
+        protected void UpdatePaths(string dataSize)
+        {
+            this.tarFile = $"{DataRoot}{dataSize}.tar";
+            this.hdf5File = $"{DataRoot}{dataSize}.h5";
+            this.sqLiteFileRowId32768 = $"{DataRoot}{dataSize}.rowid.32768.sqlite3";
+            this.sqLiteFileNoRowId8192 = $"{DataRoot}{dataSize}.wo_rowid.8192.sqlite3";
+            this.sqLiteFileRowId8192 = $"{DataRoot}{dataSize}.rowid.8192.sqlite3";
+            this.sqLiteFileNoRowId16384 = $"{DataRoot}{dataSize}.wo_rowid.16384.sqlite3";
+            this.sqLiteFileRowId16384 = $"{DataRoot}{dataSize}.rowid.16384.sqlite3";
+            this.sqLiteFileNoRowId32768 = $"{DataRoot}{dataSize}.wo_rowid.32768.sqlite3";
+            this.zipFile = $"{DataRoot}{dataSize}.zip";
+            string rawPattern = dataSize == "small" ? ".small" : string.Empty;
+            this.rawFile = $"{DataRoot}4c77b524-1857-4550-afaa-c0ebe5e3960a_101013-0000.mp3{rawPattern}";
+        }
     }
 }
