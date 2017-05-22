@@ -155,6 +155,7 @@
     <Compile Include="GetFileBenchmark.cs" />
     <Compile Include="Hdf5.cs" />
     <Compile Include="Manifest.cs" />
+    <Compile Include="Noop.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

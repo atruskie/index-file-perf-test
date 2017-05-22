@@ -24,6 +24,7 @@ namespace IndexFilePerfTest
         protected string zipFile;
         protected string rawFile;
         protected Hdf5 hdf5;
+        protected Noop noop;
         protected Raw raw;
         protected SqLite sqLite;
         protected Tar tar;
@@ -54,6 +55,7 @@ namespace IndexFilePerfTest
             this.sqLite = new SqLite(this.SqLitePath);
             this.zip = new Zip();
             this.raw = new Raw();
+            this.noop = new Noop();
         }
 
         // Allows benchmarkdotnet to automatically compare two size of files

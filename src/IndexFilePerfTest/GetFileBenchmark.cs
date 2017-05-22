@@ -113,6 +113,12 @@
         }
 
         [Benchmark]
+        public string GetFileFromNoop()
+        {
+            return this.noop.GetFile(this.rawFile, this.CurrentFile, this.OutputDirectory);
+        }
+
+        [Benchmark]
         public string GetFileFromZip()
         {
             return this.zip.GetFile(this.zipFile, this.CurrentFile, this.OutputDirectory);
@@ -134,6 +140,12 @@
         public string GetFileFromRawApi()
         {
             return this.raw.GetFileApi(this.rawFile, this.CurrentFile, this.OutputDirectory);
+        }
+
+        [Benchmark]
+        public string GetFileFromRawNoop()
+        {
+            return this.noop.GetFileApi(this.rawFile, this.CurrentFile, this.OutputDirectory);
         }
 
         [Benchmark]

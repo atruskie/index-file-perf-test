@@ -33,6 +33,12 @@
         }
 
         [Benchmark]
+        public void FileExistsFromNoop()
+        {
+            this.noop.FileExists(this.rawFile, this.CurrentFile);
+        }
+
+        [Benchmark]
         public void FileExistsFromZip()
         {
             this.zip.FileExists(this.zipFile, this.CurrentFile);
@@ -126,6 +132,12 @@
         public void FileExistsFromRawApi()
         {
             this.raw.FileExistsApi(this.rawFile, this.CurrentFile);
+        }
+
+        [Benchmark]
+        public void FileExistsFromRawNoop()
+        {
+            this.noop.FileExistsApi(this.rawFile, this.CurrentFile);
         }
 
         [Benchmark]
