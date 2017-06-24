@@ -1,6 +1,6 @@
 # Index-File-Perf-Test
 
-
+[![DOI](https://zenodo.org/badge/91054533.svg)](https://zenodo.org/badge/latestdoi/91054533)
 
 # Downloading tools
 
